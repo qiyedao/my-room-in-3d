@@ -48,6 +48,7 @@ export default class CoffeeSteam {
         this.colors.desk = '#ff6700';
         this.colors.pc = '#0082ff';
 
+        // 自定义着色器材质
         this.model.material = new THREE.ShaderMaterial({
             uniforms: {
                 uBakedDayTexture: { value: this.model.bakedDayTexture },
@@ -70,6 +71,15 @@ export default class CoffeeSteam {
             vertexShader: vertexShader,
             fragmentShader: fragmentShader
         });
+        this.model.material = new THREE.MeshBasicMaterial(); //网格基础材质，不受带有方向光源影响，没有棱角感
+        this.model.material.map = this.model.bakedDayTexture;
+
+        this.model.material = new THREE.MeshNormalMaterial(); //网格法向量材质,是一种比较特殊的材质。它使得物体的每一个面的颜色都从该面向外指的法向量计算得到的。
+        this.model.material.flatShading = true; //材质使用平面着色进行渲染
+        this.model.material.wireframe = true; //将几何体渲染为线框
+
+        this.model.material = new THREE.MeshMatcapMaterial();
+        this.model.material.matcap = this.model.bakedDayTexture;
 
         this.model.mesh.traverse(_child => {
             if (_child instanceof THREE.Mesh) {
