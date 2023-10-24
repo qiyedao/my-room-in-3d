@@ -1,109 +1,95 @@
-import * as THREE from 'three'
-import EventEmitter from './Utils/EventEmitter.js'
-import Loader from './Utils/Loader.js'
+import * as THREE from 'three';
+import EventEmitter from './Utils/EventEmitter.js';
+import Loader from './Utils/Loader.js';
 
-export default class Resources extends EventEmitter
-{
-    constructor(_assets)
-    {
-        super()
+export default class Resources extends EventEmitter {
+    constructor(_assets) {
+        super();
 
         // Items (will contain every resources)
-        this.items = {}
+        this.items = {};
 
         // Loader
-        this.loader = new Loader({ renderer: this.renderer })
+        this.loader = new Loader({ renderer: this.renderer });
 
-        this.groups = {}
-        this.groups.assets = [..._assets]
-        this.groups.loaded = []
-        this.groups.current = null
-        this.loadNextGroup()
+        this.groups = {};
+        this.groups.assets = [..._assets];
+        this.groups.loaded = [];
+        this.groups.current = null;
+        this.loadNextGroup();
 
         // Loader file end event
-        this.loader.on('fileEnd', (_resource, _data) =>
-        {
-            let data = _data
+        this.loader.on('fileEnd', (_resource, _data) => {
+            console.log('this.loader.on fileEnd', _resource, _data);
+            let data = _data;
 
             // Convert to texture
-            if(_resource.type === 'texture')
-            {
-                if(!(data instanceof THREE.Texture))
-                {
-                    data = new THREE.Texture(_data)
+            if (_resource.type === 'texture') {
+                if (!(data instanceof THREE.Texture)) {
+                    data = new THREE.Texture(_data);
                 }
-                data.needsUpdate = true
+                data.needsUpdate = true;
             }
 
-            this.items[_resource.name] = data
+            this.items[_resource.name] = data;
 
             // Progress and event
-            this.groups.current.loaded++
-            this.trigger('progress', [this.groups.current, _resource, data])
-        })
+            this.groups.current.loaded++;
+            this.trigger('progress', [this.groups.current, _resource, data]);
+        });
 
         // Loader all end event
-        this.loader.on('end', () =>
-        {
-            this.groups.loaded.push(this.groups.current)
-            
+        this.loader.on('end', () => {
+            console.log('this.loader.on end');
+            this.groups.loaded.push(this.groups.current);
+
             // Trigger
-            this.trigger('groupEnd', [this.groups.current])
+            this.trigger('groupEnd', [this.groups.current]);
 
-            if(this.groups.assets.length > 0)
-            {
-                this.loadNextGroup()
+            if (this.groups.assets.length > 0) {
+                this.loadNextGroup();
+            } else {
+                this.trigger('end');
             }
-            else
-            {
-                this.trigger('end')
-            }
-        })
+        });
     }
 
-    loadNextGroup()
-    {
-        this.groups.current = this.groups.assets.shift()
-        this.groups.current.toLoad = this.groups.current.items.length
-        this.groups.current.loaded = 0
+    loadNextGroup() {
+        this.groups.current = this.groups.assets.shift();
+        this.groups.current.toLoad = this.groups.current.items.length;
+        this.groups.current.loaded = 0;
 
-        this.loader.load(this.groups.current.items)
+        this.loader.load(this.groups.current.items);
     }
 
-    createInstancedMeshes(_children, _groups)
-    {
+    createInstancedMeshes(_children, _groups) {
         // Groups
-        const groups = []
+        const groups = [];
 
-        for(const _group of _groups)
-        {
+        for (const _group of _groups) {
             groups.push({
                 name: _group.name,
                 regex: _group.regex,
                 meshesGroups: [],
                 instancedMeshes: []
-            })
+            });
         }
 
         // Result
-        const result = {}
+        const result = {};
 
-        for(const _group of groups)
-        {
-            result[_group.name] = _group.instancedMeshes
+        for (const _group of groups) {
+            result[_group.name] = _group.instancedMeshes;
         }
 
-        return result
+        return result;
     }
 
-    destroy()
-    {
-        for(const _itemKey in this.items)
-        {
-            const item = this.items[_itemKey]
-            if(item instanceof THREE.Texture)
-            {
-                item.dispose()
+    destroy() {
+        for (const _itemKey in this.items) {
+            const item = this.items[_itemKey];
+            if (item instanceof THREE.Texture) {
+                item.dispose();
             }
         }
     }
