@@ -22,10 +22,10 @@ export default class World {
                 // this.setGoogleLeds()
                 // this.setLoupedeckButtons()
                 // this.setCoffeeSteam()
-                // this.setTopChair()
-                this.setElgatoLight(); //光源
-                // this.setBouncingLogo()
-                // this.setScreens()
+                this.setTopChair();
+                this.setElgatoLight(); //灯光
+                this.setBouncingLogo();
+                this.setScreens();
             }
         });
     }

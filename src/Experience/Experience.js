@@ -34,7 +34,7 @@ export default class Experience {
         this.sizes = new Sizes();
         this.setConfig(); // 设置配置
         // this.setStats()//性能监测
-        this.setDebug(); //调试面板
+        // this.setDebug(); //调试面板
         this.setScene(); //场景
         this.setCamera(); //相机
         this.setRenderer(); //渲染
@@ -79,7 +79,7 @@ export default class Experience {
         // Debug
         // this.config.debug = window.location.hash === '#debug'
         // this.config.debug = this.config.width > 420;
-        this.config.debug = true;
+        // this.config.debug = true;
     }
 
     setStats() {

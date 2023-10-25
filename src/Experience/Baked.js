@@ -74,12 +74,14 @@ export default class CoffeeSteam {
         this.model.material = new THREE.MeshBasicMaterial(); //网格基础材质，不受带有方向光源影响，没有棱角感
         this.model.material.map = this.model.bakedDayTexture;
 
-        this.model.material = new THREE.MeshNormalMaterial(); //网格法向量材质,是一种比较特殊的材质。它使得物体的每一个面的颜色都从该面向外指的法向量计算得到的。
-        this.model.material.flatShading = true; //材质使用平面着色进行渲染
-        this.model.material.wireframe = true; //将几何体渲染为线框
+        // this.model.material = new THREE.MeshNormalMaterial(); //网格法向量材质,是一种比较特殊的材质。它使得物体的每一个面的颜色都从该面向外指的法向量计算得到的。
+        // this.model.material.flatShading = true; //材质使用平面着色进行渲染
+        // this.model.material.wireframe = true; //将几何体渲染为线框
 
-        this.model.material = new THREE.MeshMatcapMaterial();
-        this.model.material.matcap = this.model.bakedDayTexture;
+        // this.model.material = new THREE.MeshMatcapMaterial();
+        // this.model.material.matcap = this.model.bakedDayTexture;
+        // this.model.material = new THREE.MeshStandardMaterial();
+        // this.model.material.matcap = this.model.bakedNeutralTexture;
 
         this.model.mesh.traverse(_child => {
             if (_child instanceof THREE.Mesh) {
@@ -88,50 +90,63 @@ export default class CoffeeSteam {
         });
 
         this.scene.add(this.model.mesh);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1000);
+        ambientLight.position.set(50, 100, 50);
+        this.scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xff0000, 1, 10000);
+        pointLight.position.set(50, 100, 50);
+        this.scene.add(pointLight);
+        const axesHelper = new THREE.AxesHelper(5);
+        axesHelper.setColors(0xff0000, 0x008000, 0x0000ff);
+        const size = 10;
+        const divisions = 10;
 
+        const gridHelper = new THREE.GridHelper(size, divisions);
+        // this.scene.add(gridHelper);
+        this.scene.add(axesHelper);
         // Debug
-        if (this.debug) {
-            this.debugFolder.addInput(this.model.material.uniforms.uNightMix, 'value', {
-                label: 'uNightMix',
-                min: 0,
-                max: 1
-            });
+        // if (this.debug) {
+        //     this.debugFolder.addInput(this.model.material.uniforms.uNightMix, 'value', {
+        //         label: 'uNightMix',
+        //         min: 0,
+        //         max: 1
+        //     });
 
-            this.debugFolder.addInput(this.model.material.uniforms.uNeutralMix, 'value', {
-                label: 'uNeutralMix',
-                min: 0,
-                max: 1
-            });
+        //     this.debugFolder.addInput(this.model.material.uniforms.uNeutralMix, 'value', {
+        //         label: 'uNeutralMix',
+        //         min: 0,
+        //         max: 1
+        //     });
 
-            this.debugFolder.addInput(this.colors, 'tv', { view: 'color' }).on('change', () => {
-                this.model.material.uniforms.uLightTvColor.value.set(this.colors.tv);
-            });
+        //     this.debugFolder.addInput(this.colors, 'tv', { view: 'color' }).on('change', () => {
+        //         this.model.material.uniforms.uLightTvColor.value.set(this.colors.tv);
+        //     });
 
-            this.debugFolder.addInput(this.model.material.uniforms.uLightTvStrength, 'value', {
-                label: 'uLightTvStrength',
-                min: 0,
-                max: 3
-            });
+        //     this.debugFolder.addInput(this.model.material.uniforms.uLightTvStrength, 'value', {
+        //         label: 'uLightTvStrength',
+        //         min: 0,
+        //         max: 3
+        //     });
 
-            this.debugFolder.addInput(this.colors, 'desk', { view: 'color' }).on('change', () => {
-                this.model.material.uniforms.uLightDeskColor.value.set(this.colors.desk);
-            });
+        //     this.debugFolder.addInput(this.colors, 'desk', { view: 'color' }).on('change', () => {
+        //         this.model.material.uniforms.uLightDeskColor.value.set(this.colors.desk);
+        //     });
 
-            this.debugFolder.addInput(this.model.material.uniforms.uLightDeskStrength, 'value', {
-                label: 'uLightDeskStrength',
-                min: 0,
-                max: 3
-            });
+        //     this.debugFolder.addInput(this.model.material.uniforms.uLightDeskStrength, 'value', {
+        //         label: 'uLightDeskStrength',
+        //         min: 0,
+        //         max: 3
+        //     });
 
-            this.debugFolder.addInput(this.colors, 'pc', { view: 'color' }).on('change', () => {
-                this.model.material.uniforms.uLightPcColor.value.set(this.colors.pc);
-            });
+        //     this.debugFolder.addInput(this.colors, 'pc', { view: 'color' }).on('change', () => {
+        //         this.model.material.uniforms.uLightPcColor.value.set(this.colors.pc);
+        //     });
 
-            this.debugFolder.addInput(this.model.material.uniforms.uLightPcStrength, 'value', {
-                label: 'uLightPcStrength',
-                min: 0,
-                max: 3
-            });
-        }
+        //     this.debugFolder.addInput(this.model.material.uniforms.uLightPcStrength, 'value', {
+        //         label: 'uLightPcStrength',
+        //         min: 0,
+        //         max: 3
+        //     });
+        // }
     }
 }
