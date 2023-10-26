@@ -23,13 +23,13 @@ export default class Camera {
     setInstance() {
         // Set up
         this.instance = new THREE.PerspectiveCamera(
-            20,
+            30,
             this.config.width / this.config.height,
             0.1,
             150
         );
         this.instance.rotation.reorder('YXZ');
-
+        this.instance.lookAt(new THREE.Vector3(1000, 1000, -100));
         this.scene.add(this.instance);
     }
 
@@ -39,12 +39,12 @@ export default class Camera {
         // Default
         this.modes.default = {};
         this.modes.default.instance = this.instance.clone();
-        // this.modes.default.instance.rotation.reorder('YXZ');
+        this.modes.default.instance.rotation.reorder('YXZ');
 
         // Debug
         this.modes.debug = {};
         this.modes.debug.instance = this.instance.clone();
-        // this.modes.debug.instance.rotation.reorder('YXZ');
+        this.modes.debug.instance.rotation.reorder('YXZ');
         this.modes.debug.instance.position.set(-15, 15, 15);
 
         this.modes.debug.orbitControls = new OrbitControls(

@@ -110,7 +110,8 @@ export default class CoffeeSteam {
         const listener = new THREE.AudioListener();
         console.log('this.camera', this.camera);
         this.camera.instance.add(listener);
-
+        const helper = new THREE.CameraHelper(this.camera.instance);
+        this.scene.add(helper);
         //创建全局音频源
         const sound = new THREE.Audio(listener);
 
