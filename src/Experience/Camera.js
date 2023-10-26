@@ -39,12 +39,12 @@ export default class Camera {
         // Default
         this.modes.default = {};
         this.modes.default.instance = this.instance.clone();
-        this.modes.default.instance.rotation.reorder('YXZ');
+        // this.modes.default.instance.rotation.reorder('YXZ');
 
         // Debug
         this.modes.debug = {};
         this.modes.debug.instance = this.instance.clone();
-        this.modes.debug.instance.rotation.reorder('YXZ');
+        // this.modes.debug.instance.rotation.reorder('YXZ');
         this.modes.debug.instance.position.set(-15, 15, 15);
 
         this.modes.debug.orbitControls = new OrbitControls(

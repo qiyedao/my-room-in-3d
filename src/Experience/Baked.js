@@ -8,6 +8,7 @@ export default class CoffeeSteam {
     constructor() {
         this.experience = new Experience();
         this.resources = this.experience.resources;
+        this.camera = this.experience.camera;
         this.debug = this.experience.debug;
         this.scene = this.experience.scene;
         this.time = this.experience.time;
@@ -104,6 +105,29 @@ export default class CoffeeSteam {
         const gridHelper = new THREE.GridHelper(size, divisions);
         // this.scene.add(gridHelper);
         this.scene.add(axesHelper);
+
+        //创建AudioListener并将其添加到相机
+        const listener = new THREE.AudioListener();
+        console.log('this.camera', this.camera);
+        this.camera.instance.add(listener);
+
+        //创建全局音频源
+        const sound = new THREE.Audio(listener);
+
+        // 加载声音并将其设置为音频对象的缓冲区
+        const audioLoader = new THREE.AudioLoader();
+        audioLoader.load('assets/bgm.mp3', function (buffer) {
+            console.log('buffer', buffer);
+            sound.setBuffer(buffer);
+            sound.setLoop(true);
+            sound.setVolume(1);
+
+            console.log('sound', sound);
+        });
+        window.addEventListener('click', () => {
+            if (!sound.isPlaying) sound.play();
+            console.log('sound', sound);
+        });
         // Debug
         // if (this.debug) {
         //     this.debugFolder.addInput(this.model.material.uniforms.uNightMix, 'value', {
