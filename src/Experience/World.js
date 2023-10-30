@@ -23,8 +23,8 @@ export default class World {
                 // this.setLoupedeckButtons()
                 // this.setCoffeeSteam()
                 this.setTopChair();
-                this.setElgatoLight(); //灯光
-                this.setBouncingLogo();
+                // this.setElgatoLight(); //灯光
+                // this.setBouncingLogo();
                 this.setScreens();
             }
         });

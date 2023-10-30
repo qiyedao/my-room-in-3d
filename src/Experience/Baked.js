@@ -103,7 +103,7 @@ export default class CoffeeSteam {
         const divisions = 10;
 
         const gridHelper = new THREE.GridHelper(size, divisions);
-        // this.scene.add(gridHelper);
+        this.scene.add(gridHelper);
         this.scene.add(axesHelper);
 
         //创建AudioListener并将其添加到相机
@@ -111,7 +111,7 @@ export default class CoffeeSteam {
         console.log('this.camera', this.camera);
         this.camera.instance.add(listener);
         const helper = new THREE.CameraHelper(this.camera.instance);
-        this.scene.add(helper);
+        // this.scene.add(helper);
         //创建全局音频源
         const sound = new THREE.Audio(listener);
 
